@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float rotateSpeed;
     public float jumSpeed;
+    public GameObject bullet;
+    public Transform shootPoint;
+    public float bulletSpeed = 100f;
 
     public float distanceToGround = 0.1f;
     public LayerMask groundLayer;
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         InitAxis();
+        Shoot();
     }
 
     void FixedUpdate() 
@@ -63,6 +67,16 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)&& IsOnTheGround())
         {
             _rb.AddForce(Vector3.up * jumSpeed, ForceMode.Impulse);
+        }
+    }
+
+    void Shoot()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            GameObject newBullet = Instantiate(bullet, shootPoint.position, shootPoint.rotation) as GameObject;
+            Rigidbody bulletRB = newBullet.GetComponent<Rigidbody>();
+            bulletRB.velocity = shootPoint.forward * bulletSpeed;
         }
     }
 
